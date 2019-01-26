@@ -20,7 +20,5 @@
         "psr-4": {
             "fullmvc\\metamanager\\": "src"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
