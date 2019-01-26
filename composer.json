@@ -1,0 +1,24 @@
+{
+    "name": "fullmvc/yii2-metamanager",
+    "description": "This is a meta tag manager for yii2.",
+    "keywords": ["yii2","extension","metamanager","metatag"],
+    "homepage": "https://github.com/fullmvc/yii2-metamanager",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Sándor Gál",
+            "email": "galsanyi88@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "fullmvc\\metamanager\\": "src"
+        }
+    }
+}
