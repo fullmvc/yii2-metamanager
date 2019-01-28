@@ -156,10 +156,10 @@ class MetaManager extends Component
         parent::init();
 
         if (!empty($this->defaultMetaDatas)) {
-            foreach($this->defaultMetaDatas as $key => $metaTag) {
-                $registerMethod = [$this, 'register'.ucfirst(strtolower($key))];
+            foreach ($this->defaultMetaDatas as $key => $metaTag) {
+                $registerMethod = [$this, 'register' . ucfirst(strtolower($key))];
 
-                if(is_callable($registerMethod)){
+                if (is_callable($registerMethod)) {
                     call_user_func($registerMethod, $metaTag);
                     continue;
                 }
