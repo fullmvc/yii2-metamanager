@@ -101,6 +101,40 @@ class MetaManager extends Component
      */
     public $registerTwitters = true;
 
+    /**
+     * A key value pair for the default meta attributes and values.
+     * Usage:
+     *
+     * ```php
+     * 'components' => [
+     *      'metaManager' => [
+     *          'class' => 'fullmvc\metamanager\MetaManager',
+     *          'defaultMetaDatas' => [
+     *              'DC.title' => ['content' => 'My site\'s title'],
+     *              'DC.description' => ['content' => 'This is my site'],
+     *              'og:title' => ['content' => 'My site\'s title'],
+     *              'og:description' => ['content' => 'This is my site'],
+     *          ]
+     *      ]
+     * ]
+     * ```
+     *
+     * or register all title and description at once:
+     *
+     * ```php
+     * 'components' => [
+     *      'metaManager' => [
+     *          'class' => 'fullmvc\metamanager\MetaManager',
+     *          'defaultMetaDatas' => [
+     *              'title' => ['content' => 'My site\'s title'],
+     *              'description' => ['content' => 'This is my site'],
+     *          ]
+     *      ]
+     * ]
+     * ```
+     *
+     * @var array
+     */
     public $defaultMetaDatas;
 
     /**
@@ -122,7 +156,16 @@ class MetaManager extends Component
         parent::init();
 
         if (!empty($this->defaultMetaDatas)) {
-            $this->registerMetaTags($this->defaultMetaDatas);
+            foreach($this->defaultMetaDatas as $key => $metaTag) {
+                $registerMethod = [$this, 'register'.ucfirst(strtolower($key))];
+
+                if(is_callable($registerMethod)){
+                    call_user_func($registerMethod, $metaTag);
+                    continue;
+                }
+
+                $this->registerMetaTag($this->defaultMetaDatas);
+            }
         }
 
         $this->trigger(self::EVENT_INIT);
