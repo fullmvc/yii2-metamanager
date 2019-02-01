@@ -137,6 +137,9 @@ class MetaManager extends Component
      */
     public $defaultMetaDatas;
 
+    public $disabledOnAjax = true;
+    public $disabledOnPjax = true;
+
     /**
      * @var yii\web\View
      */
@@ -156,9 +159,17 @@ class MetaManager extends Component
         parent::init();
 
         if (!empty($this->defaultMetaDatas)) {
+<<<<<<< HEAD
             foreach($this->defaultMetaDatas as $key => $metaTag) {
                 if (method_exists($this, 'register' . ucfirst(strtolower($key)))) {
                     call_user_func([$this, 'register' . ucfirst(strtolower($key))], $metaTag);
+=======
+            foreach ($this->defaultMetaDatas as $key => $metaTag) {
+                $registerMethod = [$this, 'register' . ucfirst(strtolower($key))];
+
+                if (is_callable($registerMethod)) {
+                    call_user_func($registerMethod, $metaTag);
+>>>>>>> 9dd9bbca9136324fa1ae212bb0d905fa70b3a3be
                     continue;
                 }
 
@@ -191,10 +202,13 @@ class MetaManager extends Component
      * Sets the view object to be used by this widget.
      *
      * @param \yii\web\View $view the view object that can be used to render views or view files.
+     * @return MetaManager
      */
     public function setView($view)
     {
         $this->_view = $view;
+
+        return $this;
     }
 
     /************************************ Setting up the tags ************************************/
@@ -203,18 +217,26 @@ class MetaManager extends Component
      * Register a single meta tag.
      *
      * @param array $options
-     * @param string|null $key
+     * @param MetaManager $key
      */
     public function registerMetaTag($options, $key = null)
     {
-        $this->getView()->registerMetaTag($options, $key);
-        asort($this->getView()->metaTags);
+        if (
+            (!$this->disabledOnAjax || !Yii::$app->request->getIsAjax()) &&
+            (!$this->disabledOnPjax || !Yii::$app->request->getIsPjax())
+        ) {
+            $this->getView()->registerMetaTag($options, $key);
+            asort($this->getView()->metaTags);
+        }
+
+        return $this;
     }
 
     /**
      * Unregisters a specifis meta tag.
      *
      * @param string $key
+     * @return MetaManager
      */
     public function clearMetaTag($key)
     {
@@ -222,6 +244,8 @@ class MetaManager extends Component
         if (isset($view->metaTags[$key])) {
             unset($view->metaTags[$key]);
         }
+
+        return $this;
     }
 
     /**
@@ -239,6 +263,7 @@ class MetaManager extends Component
                 $this->registerMetaTag($options, $key);
             }
         }
+
         return $this;
     }
 
@@ -257,6 +282,7 @@ class MetaManager extends Component
                 $this->registerLinkTag($options, $key);
             }
         }
+
         return $this;
     }
 
@@ -264,18 +290,27 @@ class MetaManager extends Component
      * Registers a link tag.
      *
      * @param array $options
-     * @param string|null $key
+     * @param MetaManager $key
+     * @return MetaManager
      */
     public function registerLinkTag($options, $key = null)
     {
-        $this->getView()->registerLinkTag($options, $key);
-        asort($this->getView()->linkTags);
+        if (
+            (!$this->disabledOnAjax || !Yii::$app->request->getIsAjax()) &&
+            (!$this->disabledOnPjax || !Yii::$app->request->getIsPjax())
+        ) {
+            $this->getView()->registerLinkTag($options, $key);
+            asort($this->getView()->linkTags);
+        }
+
+        return $this;
     }
 
     /**
      * Unregisters a link tag.
      *
      * @param string $key
+     * @return MetaManager
      */
     public function clearLinkTag($key)
     {
@@ -283,6 +318,8 @@ class MetaManager extends Component
         if (isset($view->linkTags[$key])) {
             unset($view->linkTags[$key]);
         }
+
+        return $this;
     }
 
     /************************************ Social registration ************************************/
@@ -519,6 +556,7 @@ class MetaManager extends Component
             $this->registerTwitter('description', $description);
             $this->registerDc('description', $description);
         }
+
         return $this;
     }
 
@@ -537,6 +575,7 @@ class MetaManager extends Component
             $this->registerTwitter('description', $description);
             $this->registerDc('description', $description);
         }
+
         return $this;
     }
 
@@ -601,6 +640,7 @@ class MetaManager extends Component
             'image' => $url,
             'image:alt' => $alt,
         ]);
+
         return $this;
     }
 
@@ -628,7 +668,7 @@ class MetaManager extends Component
      * Register model for the source of the meta attributes.
      *
      * @param yii\base\Model $model
-     * @return $this
+     * @return MetaManager
      * @throws UnknownPropertyException
      */
     public function registerModel($model)
@@ -672,7 +712,7 @@ class MetaManager extends Component
      * This registers straight a model with default meta attribute getters.
      *
      * @param yii\base\Model $model
-     * @return $this
+     * @return MetaManager
      */
     public function registerMetasWithDefaultAttributes($model)
     {
