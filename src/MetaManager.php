@@ -556,16 +556,13 @@ class MetaManager extends Component
      * This function sets the meta keywords. Keep in mind, that google does not use the meta keywords
      * for ranking your page in the search results, but other search engines probably use it.
      *
-     * @param string $description
+     * @param string|array $description
      * @return MetaManager
      */
-    public function registerKeywords($description)
+    public function registerKeywords($keywords)
     {
-        if ($this->registerMetaKeywords && !empty($description)) {
-            $this->registerMetaTag(['name' => 'description', 'content' => $description], 'description');
-            $this->registerOg('description', $description);
-            $this->registerTwitter('description', $description);
-            $this->registerDc('description', $description);
+        if ($this->registerMetaKeywords && !empty($keywords)) {
+            $this->registerMetaTag(['name' => 'keywords', 'content' => is_array($keywords) ? implode(',', $keywords) : $keywords], 'description');
         }
 
         return $this;
