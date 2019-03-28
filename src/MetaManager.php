@@ -687,7 +687,7 @@ class MetaManager extends Component
 
             if (!empty($globalAttributes)) {
                 // not found any model specific attributes, but found global ones
-                $this->registerMetasWithUniqueAttributes($model, $modelSpecificAttributes);
+                $this->registerMetasWithUniqueAttributes($model, $globalAttributes);
                 return $this;
             }
         }
