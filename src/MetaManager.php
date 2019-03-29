@@ -539,9 +539,11 @@ class MetaManager extends Component
         if (!empty($description)) {
             $description = trim(preg_replace('/\s\s+/', ' ', $description));
 
-            $description = ($pos = strrpos(substr($description, 0, $length), ' ')) !== false
-                ? substr($description, 0, $pos) . '...'
-                : StringHelper::truncateWords($description, $length);
+            if (strlen($description) > $length) {
+                $description = ($pos = strrpos(substr($description, 0, $length), ' ')) !== false
+                    ? substr($description, 0, $pos) . '...'
+                    : StringHelper::truncateWords($description, $length);
+            }
 
             $this->registerMetaTag(['name' => 'description', 'content' => $description], 'description');
             $this->registerOg('description', $description);
@@ -562,7 +564,7 @@ class MetaManager extends Component
     public function registerKeywords($keywords)
     {
         if ($this->registerMetaKeywords && !empty($keywords)) {
-            $this->registerMetaTag(['name' => 'keywords', 'content' => is_array($keywords) ? implode(',', $keywords) : $keywords], 'description');
+            $this->registerMetaTag(['name' => 'keywords', 'content' => is_array($keywords) ? implode(',', $keywords) : $keywords], 'keywords');
         }
 
         return $this;
