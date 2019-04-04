@@ -165,7 +165,10 @@ class MetaManager extends Component
                     continue;
                 }
 
-                $metaTag['name'] = $key;
+                if(!is_int($key) && !isset($metaTag['name'])) {
+                    $metaTag['name'] = $key;
+                }
+
                 $this->registerMetaTag($metaTag);
             }
         }
