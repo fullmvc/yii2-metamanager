@@ -40,6 +40,7 @@ Here you can specify the default values for each tag like:
 'components => [
     'metaManager' => [
         'class' => 'fullmvc\metamanager\MetaManager',
+        'titlePostfix' => ' - My Webshop',
         'defaultMetaDatas' => [
             'DC.description' => ['content' => 'My website\'s title'],
             'DC.title' => ['content' => 'This is my very own website'],

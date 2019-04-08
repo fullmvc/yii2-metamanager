@@ -72,6 +72,9 @@ class MetaManager extends Component
      */
     public $metaAttributes;
 
+    /** @var A string that always attached to the end of the title */
+    public $titlePostfix = '';
+
     /**
      * Optional switch to disable the registering of the meta keywords. Only works when using
      * the default attributes.
@@ -159,13 +162,13 @@ class MetaManager extends Component
         parent::init();
 
         if (!empty($this->defaultMetaDatas)) {
-            foreach($this->defaultMetaDatas as $key => $metaTag) {
+            foreach ($this->defaultMetaDatas as $key => $metaTag) {
                 if (method_exists($this, 'register' . ucfirst(strtolower($key)))) {
                     call_user_func([$this, 'register' . ucfirst(strtolower($key))], $metaTag);
                     continue;
                 }
 
-                if(!is_int($key) && !isset($metaTag['name'])) {
+                if (!is_int($key) && !isset($metaTag['name'])) {
                     $metaTag['name'] = $key;
                 }
 
@@ -516,6 +519,10 @@ class MetaManager extends Component
      */
     public function registerTitle($title = null, $addBreadcrumb = true)
     {
+        if(!empty($this->titlePostfix)){
+            $title .= $this->titlePostfix;
+        }
+
         $this->getView()->title = $title;
         $this->registerOg('title', $title);
         $this->registerTwitter('title', $title);
