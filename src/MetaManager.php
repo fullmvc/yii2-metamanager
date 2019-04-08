@@ -75,6 +75,8 @@ class MetaManager extends Component
     /** @var A string that always attached to the end of the title */
     public $titlePostfix = '';
 
+    public $descriptionLength = 150;
+
     /**
      * Optional switch to disable the registering of the meta keywords. Only works when using
      * the default attributes.
@@ -544,15 +546,15 @@ class MetaManager extends Component
      * @param int $length
      * @return MetaManager
      */
-    public function registerDescription($description, $length = 150)
+    public function registerDescription($description)
     {
         if (!empty($description)) {
             $description = trim(preg_replace('/\s\s+/', ' ', $description));
 
-            if (strlen($description) > $length) {
-                $description = ($pos = strrpos(substr($description, 0, $length), ' ')) !== false
+            if (strlen($description) > $this->descriptionLength) {
+                $description = ($pos = strrpos(substr($description, 0, $this->descriptionLength), ' ')) !== false
                     ? substr($description, 0, $pos) . '...'
-                    : StringHelper::truncateWords($description, $length);
+                    : StringHelper::truncateWords($description, $this->descriptionLength);
             }
 
             $this->registerMetaTag(['name' => 'description', 'content' => $description], 'description');

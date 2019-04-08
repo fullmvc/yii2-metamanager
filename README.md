@@ -41,6 +41,8 @@ Here you can specify the default values for each tag like:
     'metaManager' => [
         'class' => 'fullmvc\metamanager\MetaManager',
         'titlePostfix' => ' - My Webshop',
+        // default: 150, the maximum char length for description is 160 at 2019.04.08
+        'descriptionLength' => 150, 
         'defaultMetaDatas' => [
             'DC.description' => ['content' => 'My website\'s title'],
             'DC.title' => ['content' => 'This is my very own website'],
