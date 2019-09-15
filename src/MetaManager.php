@@ -72,7 +72,7 @@ class MetaManager extends Component
      */
     public $metaAttributes;
 
-    /** @var A string that always attached to the end of the title */
+    /** @var string|callable A string that always attached to the end of the title */
     public $titlePostfix = '';
 
     public $descriptionLength = 150;
@@ -521,6 +521,10 @@ class MetaManager extends Component
      */
     public function registerTitle($title = null, $addBreadcrumb = true)
     {
+        if(is_callable($this->titlePostfix)) {
+            $this->titlePostfix = call_user_func($this->titlePostfix);
+        }
+
         if(!empty($this->titlePostfix)){
             $title .= $this->titlePostfix;
         }
