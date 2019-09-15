@@ -165,6 +165,10 @@ class MetaManager extends Component
 
         if (!empty($this->defaultMetaDatas)) {
             foreach ($this->defaultMetaDatas as $key => $metaTag) {
+                if (is_callable($metaTag)) {
+                    $metaTag = call_user_func($metaTag);
+                }
+
                 if (method_exists($this, 'register' . ucfirst(strtolower($key)))) {
                     call_user_func([$this, 'register' . ucfirst(strtolower($key))], $metaTag);
                     continue;
@@ -521,8 +525,12 @@ class MetaManager extends Component
      */
     public function registerTitle($title = null, $addBreadcrumb = true)
     {
-        if(is_callable($this->titlePostfix)) {
+        if (is_callable($this->titlePostfix)) {
             $this->titlePostfix = call_user_func($this->titlePostfix);
+        }
+
+        if (is_callable($title)) {
+            $title = call_user_func($title);
         }
 
         if(!empty($this->titlePostfix)){
@@ -552,6 +560,11 @@ class MetaManager extends Component
      */
     public function registerDescription($description)
     {
+        if(
+            ble($description)) {
+            $description = call_user_func($description);
+        }
+
         if (!empty($description)) {
             $description = trim(preg_replace('/\s\s+/', ' ', $description));
 
