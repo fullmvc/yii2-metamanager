@@ -560,8 +560,7 @@ class MetaManager extends Component
      */
     public function registerDescription($description)
     {
-        if(
-            ble($description)) {
+        if (is_callable($description)) {
             $description = call_user_func($description);
         }
 
